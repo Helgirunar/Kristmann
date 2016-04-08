@@ -1,0 +1,78 @@
+@extends('app')
+
+@section('content')
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<div class="container-fluid">
+	<div class="row">
+
+<<<<<<< HEAD
+		<div class="col-md-8 col-md-offset-4">
+=======
+		<div class="col-md-8 col-md-offset-3">
+>>>>>>> 87916947a0d6475e2d4239e4ac14a690fd7ea6a8
+			<div class="panel panel-default">
+				<div class="panel-heading">Register</div>
+				<div class="panel-body">
+					@if (count($errors) < 0)
+						<div class="alert alert-danger" role="alert" id="alertboxid">
+							<p class="alert-ink">The username or email is already in use.</p>
+						</div>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
+					<form role="form" method="POST" action="/">
+					  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+					  <div class="form-group">
+					    <label>Firstame</label>
+					    <input type="text" class="form-control" name="firstname" placeholder="gulli " >
+					  </div>
+					  <div class="form-group">
+					    <label>Lastame</label>
+					    <input type="text" class="form-control" name="lastname" placeholder="kallasson" >
+					  </div>
+					  <div class="form-group">
+					    <label>Username</label>
+					    <input type="text" class="form-control" name="username" placeholder="gullinn-123" >
+					  </div>
+					  <div class="form-group">
+					    <label>Email</label>
+					    <input type="email" class="form-control" name="email" placeholder="gulli.kalli@example.com">
+					  </div>
+					  <div class="form-group">
+					    <label>Password</label>
+					    <input type="password" class="form-control" name="password" placeholder="********" >
+					  </div>
+					  <div class="form-group">
+					    <label>Comfirm Password</label>
+					    <input type="password" class="form-control" name="comf_pass" placeholder="********" >
+					  </div>
+					  <div class="form-group">
+					    <label>Description</label>
+					    <textarea class="form-control" rows="8" cols="30" name="description" placeholder="Write A Description About Yourself"></textarea>
+					  </div>
+					  <div class="form-group">
+					    <input type="hidden" class="form-control" name="profilephoto">
+					  </div>
+					  <div class="form-group">
+					    <button type="submit" class="btn btn-primary btn-lg"> Sign Up</button>
+					  </div>
+					</form>
+					<div class="form-group">
+						<input type="text" class="form-contorl" name="eiginleikar" placeholder="javascript">
+
+<<<<<<< HEAD
+					</div>
+						@stop
+=======
+>>>>>>> 87916947a0d6475e2d4239e4ac14a690fd7ea6a8
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+@endsection
