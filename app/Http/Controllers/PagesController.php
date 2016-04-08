@@ -31,7 +31,7 @@ class PagesController extends Controller {
   public function index()
     {
       if (Auth::guest())
-      return view('auth.login');
+      return view('guestindex');
 
     else
       $user = Auth::user();
@@ -44,14 +44,23 @@ class PagesController extends Controller {
 		{
 
 			$input = Request::all();
-			$image_name = Request::file('photo')->getClientOriginalName();
-			$input = Request::file('photo')->move(base_path().'/public/images', $image_name);
-			$post = (Request::except(['photo']));
-			$post['photo'] = $image_name;
-			$pathToFile = '/images/frettir/' . $post['photo'];
-			$forsida->frettmynd = $pathToFile;
 			$frettedit = Forsida::get()->where('id', 1)->first();
-			$frettedit->frettdagsins = $input['frettinn'];
+			/*if(count($input) == 4)
+			{
+				$image_name = Request::file('photo')->getClientOriginalName();
+				$inputt = Request::file('photo')->move(base_path().'/public/images/frettir', $image_name);
+				$post = (Request::except(['photo']));
+				$post['photo'] = $image_name;
+				$pathToFile = '/images/frettir/' . $post['photo'];
+
+				$frettedit->frettmynd = $pathToFile;
+				$frettedit->frettdagsins = $input['frettinn'];
+
+			}
+			else*/
+				$frettedit = Forsida::get()->where('id', 1)->first();
+				$frettedit->frettdagsins = $input['frettinn'];
+
 			$frettedit->save();
 			return redirect()->back();
 		}
@@ -72,14 +81,32 @@ class PagesController extends Controller {
 
     }
     else {
-      return view('profileguest', compact('user','profilecomments','curruser','verkefnf'));
+      return view('profileguest', compact('user','profilecomments','curruser','verkefnaf'));
     }
 	}
 
-  public function store()
+  public function store(Request $request)
 	{
 
 			$input = Request::all();
+			$redirectTo = '/auth/register';
+			?>
+
+			<html>
+			<div class="alert alert-danger" role="alert" id="alertbox">
+					<p class="alert-link">Notendanafn eða email nú þegar í notkun.</div>
+			<script>
+			$(document).ready(function(){
+			 setTimeout(function(){
+			$("#alertbox").fadeOut("slow", function () {
+			$("#alertbox").remove();
+					});
+
+		}, 1500);
+		 });
+			</script>
+
+			<?php
     /*
       $user = User::where('username', '=' ,$input::get('username'))->first();
       if($user != null)
@@ -87,27 +114,9 @@ class PagesController extends Controller {
         return redirect()->back();
     */
 
-      if(User::find($input['username']))
-      {
-        ?>
-
-        <html>
-        <div class="alert alert-danger" role="alert" id="alertbox">
-            <p class="alert-link">Notendanafn Í Notkun</p>
-        </div>
-        <script>
-        $(document).ready(function(){
-         setTimeout(function(){
-        $("#alertbox").fadeOut("slow", function () {
-        $("#alertbox").remove();
-            });
-
-        }, 1500);
-        });
-        </script>
-
-        <?php
-
+      if(User::where('username', '=', Input::get('username'))->exists())
+			{
+				return view('auth/register');
       }
       else
       {
@@ -118,6 +127,11 @@ class PagesController extends Controller {
         User::create($input);
         return redirect('/');
       }
+			return redirect('auth/register')
+							->withInput($request->only('username'))
+							->withErrors([
+								'username' => 'Already in use',
+							]);
 	}
 
   public function vefsidur()
@@ -128,7 +142,7 @@ class PagesController extends Controller {
     else
     {
           $user = Auth::user();
-          $vefsida = Vefspurn::latest('published_at')->get();
+          $vefsida = Vefspurn::latest('updated_at')->get();
           return view('vefsida', compact('vefsida', 'user'));
         }
   }

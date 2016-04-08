@@ -94,7 +94,11 @@
               <h3>Öll Verkefnin:</h3>
                 @foreach ($verkefnaf as $post_titles)
                   @if($post_titles->post_user == $user->username)
-                    <a href="{{ url('vefsida', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                    @if($post_titles->post_type == "Vefsida")
+                      <a href="{{ url('vefsida', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                    @else
+                      <a href="{{ url('verktakar', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                      @endif
                   @endif
                 @endforeach
            </div>

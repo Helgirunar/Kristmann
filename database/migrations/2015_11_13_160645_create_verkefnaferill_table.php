@@ -15,6 +15,7 @@ class CreateVerkefnaferillTable extends Migration {
 		Schema::create('verkefnaferills', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('post_type');
 			$table->string('post_id');
 			$table->string('post_title');
 			$table->string('post_user');

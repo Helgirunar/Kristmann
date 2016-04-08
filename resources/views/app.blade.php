@@ -6,7 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Laravel</title>
 
-	<link href="/css/app.css" rel="stylesheet">
+		<link href="/css/app.css" rel="stylesheet">
+		<link href="/css/simple-sidebar.css" rel="stylesheet">
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -19,7 +20,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -28,21 +29,27 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">HandySide</a>
+				<a class="navbar-brand" href="/">HandySide</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="/index">Home</a></li>
+					<li><a href="/">Home</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="/">Login</a></li>
+					@if (Auth::guest()){
+						<li><a href="/index">Login</a></li>
 						<li><a href="/auth/register">Register</a></li>
 					@else
+						@if($user->id <= 1)
+								<li><a href="#">Admin</a></li>
 								<li><a href="{{url('/index', $user->username)}}">Profile</a></li>
 								<li><a href="/auth/logout">Logout</a></li>
+						@else
+								<li><a href="{{url('/index', $user->username)}}">Profile</a></li>
+								<li><a href="/auth/logout">Logout</a></li>
+						@endif
 
 							</ul>
 						</li>
@@ -51,71 +58,86 @@
 					 	@endif
 		</div>
 	</nav>
-	<div id="wrapper">
 
-			@if (Auth::guest())
-			@else
-             <div class="sidebar-wrapper" >
-                       <ul class="nav">
-                           <li class="col-md-2" >
+		        <!-- Sidebar -->
+						@if(Auth::guest())
+
+						@else
+						<div id="wrapper">
+             <div id="sidebar-wrapper">
+                       <ul class="sidebar-nav">
+                           <li class="sidebar-brand">
                                <ul class="nav nav-second-level">
-                                   <li>
-                                       <a href="/vefsida">Vefsíður</a>
-                                   </li>
-                                   <li>
-                                       <a href="/verktakar">Verktakar</a>
-                                   </li>
-                                   <li>
-                                       <a href="#">Third Level <span class="fa arrow"></span></a>
-                                       <ul class="nav nav-third-level">
-                                           <li>
-                                               <a href="#">Third Level Item</a>
-                                           </li>
-                                       </ul>
-                                       <!-- /.nav-third-level -->
-                                   </li>
-                               </ul>
-                               <!-- /.nav-second-level -->
+																	 <li>
+																					 <a href="#" data-toggle="collapse" data-target="#verk" >Verktakar</a>
+																	 </li>
+																	 <div id="verk" class="collapse">
+																	 <li>
+																			 <a href="/verktakar">Fyrirspurn</a>
+																	 </li>
+																	 <li>
+																			 <a href="/verktakar">Eftirspurnir</a>
+																	 </li>
+																 </div>
+															 </ul>
+															 <ul class="nav nav-second-level">
+																	<li>
+																					<a href="#" data-toggle="collapse" data-target="#vef" >Vefsíður</a>
+																	</li>
+																	<div id="vef" class="collapse">
+																	<li>
+																			<a href="/vefsida">Fyrirspurn</a>
+																	</li>
+																	<li>
+																			<a href="/vefsida">Eftirspurnir</a>
+																	</li>
+																</div>
+															</ul>
                            </li>
-													 @endif
-													 <div  class="col-md-8" >
+												 </ul>
+								         </div>
+												 @endif
+													 <!-- Page Content -->
+													 <div id="page-content-wrapper" >
+										             <div class="container-fluid">
+										                 <div class="row">
+										                     <div class="col-lg-12">
 													 	@yield('content')
 													</div>
-                       </ul>
+												               </div>
+													            </div>
+													        </div>
 
                    <!-- /.sidebar-collapse -->
 
                <!-- /.navbar-static-side -->
            </nav>
-         </div>
 
 
          <div id="page-wrapper">
  			 <div class="row">
-                 <div class="col-lg-12">
-                     <h1 class="page-header">@yield('page_heading')</h1>
-                 </div>
-                 <!-- /.col-lg-12 -->
             </div>
  			<div class="row">
  				@yield('section')
 
              </div>
 						 <div class="container">
+						 </div>
+						 <div class="container">
 						      @yield('hello')
 						    </div>
          </div>
      </div>
-
 		 <div class="navbar navbar-default navbar-fixed-bottom">
 		     <div class="container">
-		       <p class="navbar-text pull-left">© 2015 - Site Built By <a href="helgi">Helgi</a> & <a href ="kristmann">Kristmann.</a>
+		       <p class="navbar-text pull-left">© 2015 - Site Built By <a href="../helgi">Helgi</a> & <a href ="../kristmann">Kristmann.</a>
 		       </p>
 			       <p class="navbar-text pull-right"><a href="/contact">Contact us.</a>
 			       </p>
 		     </div>
 		 </div>
 	<!-- Scripts -->
+	<script src="C:\Users\HelgiR-Laptop\VEF103\Kristmann\public\js\bootstrap.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </body>

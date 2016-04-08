@@ -103,7 +103,7 @@
   @if($user->username == $verktakar->hofundur)
   <div id="vefposts">
 
-    <form class="form-horizontal" role="form" method="POST" action="{{url('/verktakar/Edit', $verktakar->id)}}">
+    <form class="form-horizontal" role="form" method="POST" action="{{url('/Verktakar/Edit', $verktakar->id)}}">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <button type="submit" class="btn btn-primary btn-lg">Edit</a></button>
     </form>

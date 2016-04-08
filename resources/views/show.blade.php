@@ -18,15 +18,22 @@
    <link rel="stylesheet" type="text/css" href="../css/style.css">
 
    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
-     <link rel="stylesheet" type="text/css" href="../css/simpletextrotator.css" />
+   <link rel="stylesheet" type="text/css" href="../css/simpletextrotator.css" />
 
   <div class="container">
 <body>
 
 
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-6 col-md-offset-0">
+      @if($user->username == $vefsida->hofundur)
+          <form class="form-horizontal" role="form" method="POST" action="{{url('/Vefsida/Edit', $vefsida->id)}}">
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          <h1>{{ $vefsida->title }}<button class="btn">
+    <i class="icon-edit"></i>
+</button></h1>
+      @else
       <h1>{{ $vefsida->title }}</h1>
-
+      @endif
       <div class="modal" id="myModal" role="dialog">
         <div class="modal-dialog">
 
@@ -57,7 +64,7 @@
       @foreach ($vefcomments as $comments)
         @if($comments->post_name == $vefsida->id)
       <div class="modal" id="comment{{ $comments->id }}" role="dialog">
-        <div class="modal-dialog{{ $comments->id}} col-md-6 col-md-offset-3">
+        <div class="modal-dialog{{ $comments->id}} col-md-6 col-md-offset-0">
 
           <!-- Modal content-->
           <div class="modal-content">
@@ -103,12 +110,12 @@
       </article>
     </div>
     @if($user->username == $vefsida->hofundur)
-    <div id="vefposts">
+  <!--  <div id="vefposts">
 
       <form class="form-horizontal" role="form" method="POST" action="{{url('/Vefsida/Edit', $vefsida->id)}}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <button type="submit" class="btn btn-primary btn-lg">Edit</a></button>
-      </form>
+      </form>-->
       <br>
     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Velja Starfsmann</button>
   </form>
@@ -127,7 +134,7 @@
     @section('hello')
     @foreach ($vefcomments as $comments)
       @if($comments->post_name == $vefsida->id)
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-8 col-md-offset-0">
       <input type="hidden" name="id" value=" {{ $comments->id }}">
       <a href="{{ url('index', $comments->current_user)}}" style="font-size:200%;color:black;">
         <img src="../{{$comments->current_userPhoto}}"  height="30" style="display:inline" >
@@ -148,9 +155,9 @@
           <input type="hidden" name="post_name" value="{{ $vefsida->id }}">
           <input type="hidden" name="current_user" value="{{ $user->username }}">
           <input type="hidden" name="current_userPhoto" value="{{ $user->profilephoto }}">
-      <div class=" navbar-bottom col-md-6 col-md-offset-3" id="comments">
+      <div class=" navbar-bottom col-md-6 col-md-offset-0" id="comments">
         <label for="comment">Comment:</label>
-        <textarea class="form-control" rows="5" cols="3" name="comment"></textarea>
+        <textarea class="form-control" rows="2" cols="1" name="comment"></textarea>
         <button type="submit" class="btn btn-primary btn-lg">Submit</button>
       </div>
     </form>

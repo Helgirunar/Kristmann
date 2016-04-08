@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-  <h1>Write a new fyrirspurn</h1>
+  <h1>Breyta fyrirspurn</h1>
 
   {!! Form::open(['url' => '/vefsida/' . $vefsida->id ]) !!}
       <div Class="form-group">

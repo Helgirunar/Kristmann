@@ -6,14 +6,15 @@
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-8 col-md-offset-4">
+
+		<div class="col-md-8 col-md-offset-3">
 			<div class="panel panel-default">
 				<div class="panel-heading">Register</div>
 				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
+					@if (count($errors) < 0)
+						<div class="alert alert-danger" role="alert" id="alertboxid">
+							<p class="alert-ink">The username or email is already in use.</p>
+						</div>
 								@foreach ($errors->all() as $error)
 									<li>{{ $error }}</li>
 								@endforeach
@@ -31,7 +32,7 @@
 					    <input type="text" class="form-control" name="lastname" placeholder="kallasson" >
 					  </div>
 					  <div class="form-group">
-					    <label>Userame</label>
+					    <label>Username</label>
 					    <input type="text" class="form-control" name="username" placeholder="gullinn-123" >
 					  </div>
 					  <div class="form-group">
@@ -58,11 +59,9 @@
 					  </div>
 					</form>
 
-						@stop
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 @endsection

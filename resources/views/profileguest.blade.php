@@ -54,6 +54,26 @@
          </div>
        </div>
 
+       <div class="span7 homeabout" id="verkefna_ferill">
+                  <div class="person">
+                    <span class="name">{{ $user->firstname }} {{ $user->lastname }} - ( {{$user->username}} ) - VerkefnaFerill</span>
+                  </div>
+                  <div class="desciption home">
+                     <h2>Nýjasta  verkefni: {{$user->verkefni}}</h2>
+                     <h3>Öll Verkefnin:</h3>
+                       @foreach ($verkefnaf as $post_titles)
+                         @if($post_titles->post_user == $user->username)
+                          @if($post_titles->post_type == "Vefsida")
+                            <a href="{{ url('vefsida', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                           @else
+                            <a href="{{ url('verktakar', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                          @endif
+                         @endif
+                       @endforeach
+                  </div>
+
+                </div>
+
 
        <div class="modal" id="myModal" role="dialog">
          <div class="modal-dialog">
@@ -88,9 +108,15 @@
 <script>
 $(document).ready(function(){
   $('#edit_scription').hide();
+  $('#verkefna_ferill').hide();
   $('#button_breyta').click(function(){
     $('#De_scription').hide();
     $('#edit_scription').show();
+  });
+  $('#verkefnaferil').click(function(){
+    $('#De_scription').hide();
+    $('#edit_scription').hide();
+    $('#verkefna_ferill').show();
   });
 
 });
@@ -105,12 +131,12 @@ $(document).ready(function(){
   <input type="hidden" name="profile_name" value="{{ $user->username }}">
   <input type="hidden" name="current_user" value="{{ $curruser->username }}">
 
-@foreach ($comments as $comments)
-  @if($comments->profile_name == $user->username)
+@foreach ($profilecomments as $profilecomments)
+  @if($profilecomments->profile_name == $user->username)
 
 <div class="col-md-6 col-md-offset-3">
-  <h1>{{ $comments->current_user }}</h1>
-  <p>{{ $comments->comment }}</p>
+  <h1>{{ $profilecomments->current_user }}</h1>
+  <p>{{ $profilecomments->comment }}</p>
   <!--<div class=" navbar navbar-fixed-bottom col-md-offset-2" id="submit_myndir">
     <img src="../{{$user->profilephoto}}"  height="50" >
 </div>-->
@@ -119,7 +145,7 @@ $(document).ready(function(){
 @endif
 
 @endforeach
-  <div class=" navbar-bottom col-md-6 col-md-offset-3" id="comments">
+  <div class=" navbar-bottom col-md-6 col-md-offset-3" id="profilecomments">
     <label for="comment">Comment:</label>
     <textarea class="form-control" rows="5" cols="3" name="comment"></textarea>
     <button type="submit" class="btn btn-primary btn-lg">Submit</button>

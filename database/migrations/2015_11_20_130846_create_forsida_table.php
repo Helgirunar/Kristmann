@@ -15,8 +15,7 @@ class CreateForsidaTable extends Migration {
 		Schema::create('forsidas', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('frettdagsins');
-			$table->string('frettmynd');
+			$table->string('frettdagsins', 1000);
 			$table->timestamps();
 		});
 	}

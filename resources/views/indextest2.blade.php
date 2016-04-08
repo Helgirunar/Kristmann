@@ -1,11 +1,14 @@
 @extends('app')
 
 @section('hello')
-      <h2>Vefsíður top3</h2><br>
+
       @foreach ($verktakar as $verktakar)
 
       @endforeach
-      <div class="col-md-6">
+      <div class="col-md-8">
+            <h2 align="center"> TOP 3</h2><br></div>
+      <div class="col-md-12" style='background: #e3e3e3;'>
+      <div class="col-md-6" style="display: inline-block;">
         <ul class="nav">
                 <li><h1>Verktakar</h1></li>
 
@@ -39,10 +42,10 @@
       @foreach ($vefsida as $vefsida)
 
       @endforeach
-      <div class="col-md-6" >
+      <div class="col-md-6" style="display: inline-block;">
       <ul class="nav">
               <li><h1>Vefsíður</h1></li>
-      @if(count($vefsida) > 3)
+      @if(count($vefsida->all()) > 3)
       @for($i = 0; $i < 3;$i++)
       <li><h2>
           <a href="{{url('/vefsida',  $vefsida->all()[$i]->id)}}">{{ $vefsida->all()[$i]->title }}</a>
@@ -69,7 +72,7 @@
 </ul>
 
  </div>
-
+</div>
 
 
 
@@ -77,30 +80,13 @@
 @stop
 @section('content')
 <div class="col-sm-13">
-<!--
-<h3>Eftir að gera:</h3>
-<pre>
-<del>Comments á profile</del>
-<del>Bæta við post, þannig að hægt er að sjá hvort aðili hefur fundið aðila í vinnu.</del>
-<del>Gera history, hvaða verkefni einn aðili hefur gert.</del>
-<del>index - sína top 3 síðurnar (viewcount)</del>
-comments - Hafa möguleikan a þvi að breyta eða eyða comments
-<del>profile/logout- laga logout og profile takkan uppi inna öllum undirsíðunum (posts-profile... ect.)</del>
-<del>footer - gera contact link a creators , gera linka a helga og kristmann (poppa up sma siða um hvorn aðilan)</del>
-<del>alert - finna betra alert box (kanski einhvað sem skrifast sem error a siðuna i rauðum stöfum og hverfur siðan)</del>
->>>>>>> 0aff0bfdfd8456120faefe0e7ea6c5083d975591
-css - laga allt sem þarf að laga og reyna gera hluti flottari ?
-myndir - reyna laga þannig að þegar þu breytir um mynd uppfærist sjálfkrafa a post/comments.
-Bæta við admin aðgang, getur postað posts á index síðu.
-</pre>
-</div>
-<<<<<<< HEAD
-=======
-</div>
--->
-<pre>
-    {{$forsida->frettdagsins}}
-</pre>
+
+  <div>
+    <h1>Frétt Dagsins</h1>
+    <br>
+     <pre><h4>{{$forsida->frettdagsins}}</h4></pre>
+  </div>
+
 <div class="modal" id="editfrett" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
@@ -109,16 +95,12 @@ Bæta við admin aðgang, getur postað posts á index síðu.
         <h4 class="modal-title">Edit comment</h4>
       </div>
       <div class="modal-body">
-        <p>Veldu Starfmann i Verkefnið</p>
+        <p>Breyta Frétt Dagsins</p>
         <form action="/frett" method="POST" enctype="multipart/form-data" >
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="frettdagsins">
-        <textarea class="form-control" placeholder="Ný Frétt" name="frettinn"></textarea>
+        <textarea class="form-control" placeholder="Ný Frétt" name="frettinn">{{$forsida->frettdagsins}}</textarea>
         <input type="submit" value="Staðfesta frett" class="btn btn-orimary btn-lg">
-        <br>
-        <input type="submit" class="btn btn-orimary btn-lg" value="Staðfesta Mynd">
-        <br>
-        <input type="file" name="photo" accept="image/*">
         </form>
       </div>
 

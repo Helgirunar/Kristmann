@@ -43,7 +43,7 @@ class AuthController extends Controller {
 
 	{
 
-		$redirectTo = '/index';
+		$redirectTo = '/';
 		?>
 
 		<html>

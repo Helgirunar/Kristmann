@@ -5,7 +5,13 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 body {
+  padding-top:45px;
+  padding-bottom:75px;
+  width: 95%;
   margin: 0;
+}
+#black-sidebar {
+background-color: black;
 }
 article,
 aside,
@@ -901,6 +907,12 @@ body {
   line-height: 1.42857143;
   color: #333333;
   background-color: #ffffff;
+  background: url("http://www.mountairyhabitat.org/wp-content/uploads/2013/05/gray-background1.jpg") no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-size: 100% 100%;
 }
 input,
 button,

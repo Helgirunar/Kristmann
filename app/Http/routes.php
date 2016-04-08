@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'PagesController@index');
-Route::get('/index', 'PagesController@index');
+Route::get('/index', 'PagesController@indextest');
 Route::get('index/{username}', 'PagesController@profile');
 Route::get('/signup', 'PagesController@signUp');
 Route::post('/', 'PagesController@store');
