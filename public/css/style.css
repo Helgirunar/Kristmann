@@ -13,8 +13,19 @@ margin: 6% auto;
 a, a:hover{
 	text-decoration: none;
 }
-
 .avatar { width:100%;}
+.uploads {
+	width:100px;
+	height:100px;
+}
+.plusa_Vidimg{
+	align;
+}
+.upload_div{
+	display: inline-block;
+	border: 3px solid;
+	background: #A9A9A9;
+}
 .navigation > div{
 	background: url('../img/sep.png') repeat-y 60px 195px;
 }

@@ -9,6 +9,7 @@ use App\Profilecomments;
 use App\Verkcomments;
 use App\Verkefnaferills;
 use App\Forsida;
+use App\Uphlada;
 use App\Http\Requests;
 //use App\Http\Controllers\Controller;
 use App\config;
@@ -71,17 +72,17 @@ class PagesController extends Controller {
 	}
   public function profile($username)
 	{
-    $curruser = Auth::user();
-    $user = User::get()->where('username', $username)->first();
+    $user = Auth::user();
+    $prouser = User::get()->where('username', $username)->first();
     $profilecomments = Profilecomments::latest('created_at')->get();
     $verkefnaf = Verkefnaferills::latest('created_at')->get();
-    if($user->username == $curruser->username)
+    if($prouser->username == $user->username)
     {
-		return view('profile', compact('user','profilecomments','curruser', 'verkefnaf'));
+		return view('profile', compact('user','profilecomments','prouser', 'verkefnaf'));
 
     }
     else {
-      return view('profileguest', compact('user','profilecomments','curruser','verkefnf'));
+      return view('profileguest', compact('user','profilecomments','prouser','verkefnaf'));
     }
 	}
 
@@ -137,7 +138,8 @@ class PagesController extends Controller {
     else
     {
           $user = Auth::user();
-          $vefsida = Vefspurn::latest('published_at')->get();
+          $vefsida = Vefspurn::orderBy('created_at', 'desc')->get();
+
           return view('vefsida', compact('vefsida', 'user'));
         }
   }
@@ -165,11 +167,12 @@ class PagesController extends Controller {
         {
         $user = Auth::user();
         $vefcomments = Vefcomments::latest('created_at')->get();
+				$uphlada = Uphlada::latest('created_at')->get();
         $vefsida = Vefspurn::findOrFail($id);
         $vefsida->viewcount = $vefsida->viewcount + 1;
         $vefsida->save();
 
-        return view('show', compact('vefsida','user','vefcomments'));
+        return view('show', compact('vefsida','user','vefcomments', 'uphlada'));
       }
   }
 
@@ -181,12 +184,13 @@ class PagesController extends Controller {
         else
         {
         $user = Auth::user();
+				$uphlada = Uphlada::latest('created_at')->get();
         $verktakar = Verktakar::findOrFail($id);
         $verkcomments = Verkcomments::latest('created_at')->get();
         $verktakar->viewcount = $verktakar->viewcount + 1;
         $verktakar->save();
 
-        return view('showverk', compact('verktakar','user','verkcomments'));
+        return view('showverk', compact('verktakar','user','verkcomments', 'uphlada'));
       }
   }
 
@@ -217,7 +221,59 @@ public function createverk()
   public function VefStore()
 	{
 		$input = Request::all();
-		Vefspurn::create($input);
+		$myndir = 0;
+		$file = 0;
+		//$upload = Uphlada::all();
+		//dd($input);
+		//Uphlada::create($input);
+		$vefcreate = Vefspurn::create($input);
+		//dd($input);
+		$maxinput = sizeof($input);
+		$id = $vefcreate['attributes']['id'];
+		$array = [
+    "id_vef" => $id,
+		];
+		$array1 = [
+    "id_vef" => $id,
+		];
+		$z = 1;
+		$u = 1;
+		$r = 1;
+		$input2 = array_values($input);
+		for($b = 6; $b < $maxinput; $b++)
+		{
+			if(isset($input['uphladaimg' . $r]) && $input2[$b] == $input['uphladaimg' . $r])
+			{
+				$myndir++;
+				$r += 1;
+			}
+			else{
+				$file++;
+			}
+		}
+		for($t = 0; $t < $file; $t++)
+		{
+			$upload_file = Request::file('uphladafile' . $z)->getClientOriginalName();
+			$unitname2 = $input['title'] . $upload_file;
+			$skra_file = Request::file('uphladafile' . $z);
+			$skra_file->move(base_path().'/public/uploads', $unitname2);
+			$array['uphlada_file'] = "/uploads/" . $unitname2;
+			$array['uphlada_img'] = "null";
+			Uphlada::create($array);
+			$z += 1;
+		}
+		for($i = 0; $i < $myndir; $i++)
+		{
+			$upload_img = Request::file('uphladaimg' . $u)->getClientOriginalName();
+			$unitname1 = $input['title'] . $upload_img;
+			$skra_img = Request::file('uphladaimg' . $u);
+			$skra_img->move(base_path().'/public/uploads', $unitname1);
+			//dd(base_path().'/public/uploads', $unitname);
+			$array1['uphlada_img'] = "/uploads/" . $unitname1;
+			$array1['uphlada_file'] = "null";
+			Uphlada::create($array1);
+			$u += 1;
+		}
 		return redirect('/vefsida');
 	}
 
@@ -254,20 +310,70 @@ public function vefedited($id){
       $user = Auth::user();
       $input = Request::all();
       $vefsida = Vefspurn::find($input['id']);
+			$uphlada = Uphlada::latest('created_at')->get();
       $vefcomments = Vefcomments::latest('created_at')->get();
       //dd($vefsida);
       $vefsida->title = $input['title'];
       $vefsida->body = $input['body'];
 
       $vefsida->save();
-      return view('show', compact('user','vefsida','vefcomments'));
+      return view('show', compact('user','vefsida','vefcomments', 'uphlada'));
   }
 }
 
 
   public function VerkStore(){
     $input = Request::all();
-    Verktakar::Create($input);
+		$maxinput = sizeof($input);
+		$myndir = 0;
+		$file = 0;
+
+		$verkCreate = Verktakar::Create($input);
+		$id = $verkCreate['attributes']['id'];
+		$array = [
+			"id_verk" => $id,
+		];
+		$array1 = [
+				"id_verk" => $id,
+			];
+		$z = 1;
+		$u = 1;
+		$r = 1;
+		$input2 = array_values($input);
+		for($b = 6; $b < $maxinput; $b++)
+		{
+			if(isset($input['uphladaimg' . $r]) && $input2[$b] == $input['uphladaimg' . $r])
+			{
+				$myndir++;
+				$r += 1;
+			}
+			else{
+				$file++;
+			}
+		}
+		for($t = 0; $t < $file; $t++)
+		{
+			$upload_file = Request::file('uphladafile' . $z)->getClientOriginalName();
+			$unitname2 = $input['title'] . $upload_file;
+			$skra_file = Request::file('uphladafile' . $z);
+			$skra_file->move(base_path().'/public/uploads', $unitname2);
+			$array['uphlada_file'] = "/uploads/" . $unitname2;
+			$array['uphlada_img'] = "null";
+			Uphlada::create($array);
+			$z += 1;
+		}
+		for($i = 0; $i < $myndir; $i++)
+		{
+			$upload_img = Request::file('uphladaimg' . $u)->getClientOriginalName();
+			$unitname1 = $input['title'] . $upload_img;
+			$skra_img = Request::file('uphladaimg' . $u);
+			$skra_img->move(base_path().'/public/uploads', $unitname1);
+			//dd(base_path().'/public/uploads', $unitname);
+			$array1['uphlada_img'] = "/uploads/" . $unitname1;
+			$array1['uphlada_file'] = "null";
+			Uphlada::create($array1);
+			$u += 1;
+		}
     return redirect('/verktakar');
   }
   public function verkedited($id)
@@ -278,6 +384,7 @@ public function vefedited($id){
     {
       $user = Auth::user();
       $input = Request::all();
+			$uphlada = Uphlada::latest('created_at')->get();
       $verktakar = Verktakar::find($input['id']);
       $verkcomments = Verkcomments::latest('created_at')->get();
       //dd($vefsida);
@@ -285,14 +392,14 @@ public function vefedited($id){
       $verktakar->body = $input['body'];
 
       $verktakar->save();
-      return view('showverk', compact('user','verktakar','verkcomments'));
+      return view('showverk', compact('user','verktakar','verkcomments', 'uphlada'));
     }
   }
 public function PhotoId(){
   $user = Auth::user();
   $image_name = Request::file('photo')->getClientOriginalName();
   $unitname = $user->id . $image_name;
-  $input = Request::file('photo')->move(base_path().'/public/images', $unitname);
+  Request::file('photo')->move(base_path().'/public/images', $unitname);
   $post = (Request::except(['photo']));
   $post['photo'] = $unitname;
   $pathToFile = '/images/' . $post['photo'];

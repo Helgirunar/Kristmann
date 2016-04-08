@@ -58,7 +58,10 @@
 					    <button type="submit" class="btn btn-primary btn-lg"> Sign Up</button>
 					  </div>
 					</form>
+					<div class="form-group">
+						<input type="text" class="form-contorl" name="eiginleikar" placeholder="javascript">
 
+					</div>
 						@stop
 					</form>
 				</div>

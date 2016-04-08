@@ -4,11 +4,8 @@
 
 <div class="container-fluid">
 	<div class="row">
-<<<<<<< HEAD
-		<div class="col-md-5 col-md-offset-6">
-=======
-		<div class="col-md-8 col-md-offset-4">
->>>>>>> 1c498d7fbed3934bd4d9a8a7eb69af536c738bab
+		<div class="col-md-5 col-md-offset-5">
+		<div class="col-md-12 col-md-offset-2">
 			<div class="panel panel-default">
 				<div class="panel-heading">Login</div>
 				<div class="panel-body">

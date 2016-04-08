@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration {
 			$table->string('description');
 			$table->string('profilephoto');
 			$table->string('verkefni');
+			$table->string('eiginleikar');
 			$table->rememberToken();
 			$table->timestamps();
 		});

@@ -122,6 +122,54 @@
   @endif
 
   @stop
+  @section('section')
+  <div class="col-md-6 col-md-offset-4">
+    <h1>Myndir og Önnur Verkefni</h1>
+    <div class="row-fluid" id="divmyndir">
+      <?php $i=1 ?>
+      @foreach ($uphlada as $uploads)
+        @if($uploads->id_verk == $verktakar->id)
+        @if($uploads->uphlada_img == "null")
+        <div class="upload_div">
+          <?php echo('<img data-url="..' . $uploads->uphlada_file . '" src="../uploads/standard_file.png" class="uploads" id="upload_myndir' . $i . '">') ?>
+          <?php $i += 1 ?>
+        </div>
+        @endif
+        @if($uploads->uphlada_file == "null")
+        <div class="upload_div">
+          <?php echo('<img src="..' . $uploads->uphlada_img . '" class="uploads" id="upload_myndir' . $i . '">') ?>
+          <?php $i += 1 ?>
+        </div>
+        @endif
+        @endif
+      @endforeach
+      <script>
+        $(document).ready(function(){
+          $("#divmyndir .uploads").mouseover(function(){
+            console.log("going in");
+            $(this).animate( { height:"250px", width:"250px" }, { queue:false, duration:500 });
+
+          }).mouseout(function() {
+            console.log("going out");
+            $(this).animate( { height:"100px", width:"100px"}, { queue:true, duration:500 });
+          }).click(function(e){
+            e.preventDefault();
+
+            if($(this).data("url"))
+            {
+              window.location.href = $(this).data("url");
+            }
+            else
+            {
+              window.location.href = this.src;
+            }
+          })
+        });
+      </script>
+    </div>
+
+  </div>
+  @stop
     @section('hello')
     @foreach ($verkcomments as $comments)
       @if($comments->post_name == $verktakar->id)

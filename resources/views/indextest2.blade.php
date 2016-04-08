@@ -43,7 +43,7 @@
       <div class="col-md-6" >
       <ul class="nav">
               <li><h1>Vefsíður</h1></li>
-      @if(count($vefsida) > 3)
+      @if(count($vefsida->all()) > 3)
       @for($i = 0; $i < 3;$i++)
       <li><h2>
           <a href="{{url('/vefsida',  $vefsida->all()[$i]->id)}}">{{ $vefsida->all()[$i]->title }}</a>
@@ -69,8 +69,7 @@
    @endif
 </ul>
 
- </div>
-
+ </div> 
 
 
 

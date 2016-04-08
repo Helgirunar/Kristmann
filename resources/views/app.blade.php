@@ -28,7 +28,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">HandySide</a>
+				<a class="navbar-brand" href="/index">HandySide</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -37,13 +37,20 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
+					@if (Auth::guest()){
 						<li><a href="/">Login</a></li>
 						<li><a href="/auth/register">Register</a></li>
-					@else
+					}
+					@else{
+						@if($user->id <= 1)
+								<li><a href="#">Admin</a></li>
 								<li><a href="{{url('/index', $user->username)}}">Profile</a></li>
 								<li><a href="/auth/logout">Logout</a></li>
-
+						@else
+								<li><a href="{{url('/index', $user->username)}}">Profile</a></li>
+								<li><a href="/auth/logout">Logout</a></li>
+						@endif
+						}
 							</ul>
 						</li>
 				</ul>
@@ -106,7 +113,6 @@
 						    </div>
          </div>
      </div>
-
 		 <div class="navbar navbar-default navbar-fixed-bottom">
 		     <div class="container">
 		       <p class="navbar-text pull-left">© 2015 - Site Built By <a href="helgi">Helgi</a> & <a href ="kristmann">Kristmann.</a>

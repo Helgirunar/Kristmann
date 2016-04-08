@@ -36,7 +36,7 @@
    <div class="row-fluid">
 
      <div class="span5">
-       <img src="../{{$user->profilephoto}}" alt="Profile Avatar"  class="avatar" height="439">
+       <img src="../{{$prouser->profilephoto}}" alt="Profile Avatar"  class="avatar" height="439">
 
        <div class="navigation">
          <div>
@@ -60,11 +60,11 @@
 
      <div class="span7 homeabout" id="De_scription">
        <div class="person">
-         <span class="name">{{ $user->firstname }} {{ $user->lastname }} - ( {{$user->username}} )</span>
+         <span class="name">{{ $prouser->firstname }} {{ $prouser->lastname }} - ( {{$prouser->username}} )</span>
        </div>
        <div class="desciption home">
          <article>
-           {{ $user->description}}
+           {{ $prouser->description}}
          </article>
 
            </div>
@@ -74,11 +74,11 @@
            <input type="hidden" name="_token" value="{{ csrf_token() }}">
        <div class="span7 homeabout" id="edit_scription">
          <div class="person">
-           <span class="name">{{ $user->firstname }} {{ $user->lastname }} - ( {{$user->username}} ) - Breyting Á Persónu lýsingu</span>
+           <span class="name">{{ $prouser->firstname }} {{ $prouser->lastname }} - ( {{$prouser->username}} ) - Breyting Á Persónu lýsingu</span>
          </div>
          <div class="desciption home">
            <textarea rows="8" cols="80" name="descritionEdited">
-             {{ $user->description }}
+             {{ $prouser->description }}
            </textarea>
            <button type="submit" class="btn btn-danger btn-lg" id="desciption_breytt" >Breyta</button>
              </div>
@@ -87,13 +87,13 @@
 
          <div class="span7 homeabout" id="verkefna_ferill">
            <div class="person">
-             <span class="name">{{ $user->firstname }} {{ $user->lastname }} - ( {{$user->username}} ) - VerkefnaFerill</span>
+             <span class="name">{{ $prouser->firstname }} {{ $prouser->lastname }} - ( {{$prouser->username}} ) - VerkefnaFerill</span>
            </div>
            <div class="desciption home">
-              <h2>Nýjasta verkefni: {{$user->verkefni}}</h2>
+              <h2>Nýjasta verkefni: {{$prouser->verkefni}}</h2>
               <h3>Öll Verkefnin:</h3>
                 @foreach ($verkefnaf as $post_titles)
-                  @if($post_titles->post_user == $user->username)
+                  @if($post_titles->post_user == $prouser->username)
                     <a href="{{ url('vefsida', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
                   @endif
                 @endforeach
@@ -104,7 +104,7 @@
 <!-- START OF MODALS -->
 
 @foreach ($profilecomments as $comments)
-  @if($comments->profile_name == $user->username)
+  @if($comments->profile_name == $prouser->username)
 <div class="modal" id="comment{{ $comments->id }}" role="dialog">
   <div class="modal-dialog{{ $comments->id}} col-md-6 col-md-offset-3">
 
@@ -116,10 +116,10 @@
       <div class="modal-body">
         <form action="/index/breytacomment" method="POST" enctype="multipart/form-data" >
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="current_user" value="{{ $curruser->username }}">
-        <input type="hidden" name="profile_name" value="{{ $user->username }}">
+        <input type="hidden" name="current_user" value="{{ $user->username }}">
+        <input type="hidden" name="profile_name" value="{{ $prouser->username }}">
         <input type="hidden" name="id" value="{{ $comments->id }}">
-        <input type="hidden" name="current_userPhoto" value="{{ $curruser->profilephoto }}">
+        <input type="hidden" name="current_userPhoto" value="{{ $user->profilephoto }}">
         <textarea class="form-control" name="comment" > {{ $comments->comment }}</textarea>
         <input type="submit" value="Saðfesta Comment" class="btn btn-orimary btn-lg">
         </form>
@@ -184,13 +184,13 @@ $(document).ready(function(){
 
 });
 </script>
-</html>
-
-@stop
+<!-- @stop
 
 @section('hello')
+-->
+
 @foreach ($profilecomments as $comments)
-  @if($comments->profile_name == $user->username)
+  @if($comments->profile_name == $prouser->username)
 <div class="col-md-6 col-md-offset-3">
   <input type="hidden" name="id" value=" {{ $comments->id }}">
   <a href="{{ url('index', $comments->current_user)}}" style="font-size:200%;color:black;">
@@ -198,7 +198,7 @@ $(document).ready(function(){
     {{ $comments->current_user }}
   </a>
   <p>{{ $comments->comment }}</p>
-  @if($curruser->username == $comments->current_user)
+  @if($user->username == $comments->current_user)
   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#comment{{$comments->id}}">Edit</button>
   @endif
 </div>
@@ -208,9 +208,9 @@ $(document).ready(function(){
 @endforeach
 <form class="form-horizontal" role="form" method="POST" action="/profilesaveComment">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-      <input type="hidden" name="profile_name" value="{{ $user->username }}">
-      <input type="hidden" name="current_user" value="{{ $curruser->username }}">
-      <input type="hidden" name="current_userPhoto" value="{{ $curruser->profilephoto }}">
+      <input type="hidden" name="profile_name" value="{{ $prouser->username }}">
+      <input type="hidden" name="current_user" value="{{ $user->username }}">
+      <input type="hidden" name="current_userPhoto" value="{{ $user->profilephoto }}">
   <div class=" navbar-bottom col-md-6 col-md-offset-3" id="comments">
     <label for="comment">Comment:</label>
     <textarea class="form-control" rows="5" cols="3" name="comment"></textarea>

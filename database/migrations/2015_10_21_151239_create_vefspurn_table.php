@@ -21,6 +21,7 @@ class CreateVefspurnTable extends Migration {
 			$table->text('current_photo');
 			$table->text('starfsmadur');
 			$table->integer('viewcount')->default(0);
+			$table->text('uphlada');
 			$table->timestamps();
 			$table->timestamp('published_at');
 		});

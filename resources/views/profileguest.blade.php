@@ -30,95 +30,102 @@
 </head>
 <body >
 
- <div class="container topbottom">
-   <!-- Modal -->
+  <div class="container topbottom">
+    <!-- Modal -->
 
-   <div class="row-fluid">
+    <div class="row-fluid">
 
-     <div class="span5">
-       <img src="../{{$user->profilephoto}}" alt="Profile Avatar"  class="avatar" height="439">
+      <div class="span5">
+        <img src="../{{$prouser->profilephoto}}" alt="Profile Avatar"  class="avatar" height="439">
 
-     </div>
+        <div class="navigation">
+          <div>
+            <ul>
+              <li>
+                <img src="../img/about-icon.png">
+                <button type="button" class="btn btn-primary btn-lg" id="tilbaka">Skoða Lýsingu</button>
+              </li>
+             <li>
+               <img src="../img/about-icon.png">
+               <button type="button" class="btn btn-primary btn-lg" id="verkefnaferil">Skoða Verkefnaferil</buton>
+            </ul>
+          </div>
+        </div>
+      </div>
 
      <div class="span7 homeabout" id="De_scription">
        <div class="person">
-         <span class="name">{{ $user->firstname }} {{ $user->lastname }} - ( {{$user->username}} )</span>
+         <span class="name">{{ $prouser->firstname }} {{ $prouser->lastname }} - ( {{$prouser->username}} )</span>
        </div>
        <div class="desciption home">
          <article>
-           {{ $user->description}}
+           {{ $prouser->description}}
          </article>
 
            </div>
          </div>
-         </div>
-       </div>
-
-
-       <div class="modal" id="myModal" role="dialog">
-         <div class="modal-dialog">
-
-           <!-- Modal content-->
-           <div class="modal-content">
-             <div class="modal-header">
-               <h4 class="modal-title">Modal Header</h4>
-             </div>
-             <div class="modal-body">
-               <p>Veldu nýja mynd</p>
-               <form action="/setphoto" method="POST" enctype="multipart/form-data" files="true">
-                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                 <input type="file" name="photo" accept="image/*">
-                 <input type="submit" value="Staðfesta Mynd">
-               </form>
-             </div>
-
-             <div class="modal-footer">
-               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-             </div>
+         <div class="span7 homeabout" id="verkefna_ferill">
+           <div class="person">
+             <span class="name">{{ $prouser->firstname }} {{ $prouser->lastname }} - ( {{$prouser->username}} ) - VerkefnaFerill</span>
+           </div>
+           <div class="desciption home">
+              <h2>Nýjasta  verkefni: {{$prouser->verkefni}}</h2>
+              <h3>Öll Verkefnin:</h3>
+                @foreach ($verkefnaf as $post_titles)
+                  @if($post_titles->post_user == $prouser->username)
+                    <a href="{{ url('vefsida', $post_titles->post_id)}}" style="font-size:150%;color:black;">{{$post_titles->post_title}} <br> </a>
+                  @endif
+                @endforeach
            </div>
 
          </div>
+
+         </div>
        </div>
-
-     </div>
-
-   </div>
  </div>
 </body>
 <script>
 $(document).ready(function(){
-  $('#edit_scription').hide();
-  $('#button_breyta').click(function(){
+  $('#verkefna_ferill').hide();
+  $('#verkefnaferil').click(function(){
     $('#De_scription').hide();
-    $('#edit_scription').show();
+    $('#verkefna_ferill').show();
   });
-
+  $('#tilbaka').click(function(){
+    $('#verkefna_ferill').hide();
+    $('#De_scription').show();
+  });
 });
 </script>
 </html>
 
-@stop
+<!-- @stop
 
 @section('hello')
-<form class="form-horizontal" role="form" method="POST" action="/profilesaveComment">
-  <input type="hidden" name="_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="profile_name" value="{{ $user->username }}">
-  <input type="hidden" name="current_user" value="{{ $curruser->username }}">
+-->
 
-@foreach ($comments as $comments)
-  @if($comments->profile_name == $user->username)
-
+@foreach ($profilecomments as $comments)
+  @if($comments->profile_name == $prouser->username)
 <div class="col-md-6 col-md-offset-3">
-  <h1>{{ $comments->current_user }}</h1>
+  <input type="hidden" name="id" value=" {{ $comments->id }}">
+  <a href="{{ url('index', $comments->current_user)}}" style="font-size:200%;color:black;">
+    <img src="../{{$comments->current_userPhoto}}"  height="30" style="display:inline" >
+    {{ $comments->current_user }}
+  </a>
   <p>{{ $comments->comment }}</p>
-  <!--<div class=" navbar navbar-fixed-bottom col-md-offset-2" id="submit_myndir">
-    <img src="../{{$user->profilephoto}}"  height="50" >
-</div>-->
+  @if($user->username == $comments->current_user)
+  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#comment{{$comments->id}}">Edit</button>
+  @endif
 </div>
 @else
 @endif
 
 @endforeach
+<form class="form-horizontal" role="form" method="POST" action="/profilesaveComment">
+      <input type="hidden" name="_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="profile_name" value="{{ $prouser->username }}">
+      <input type="hidden" name="current_user" value="{{ $user->username }}">
+      <input type="hidden" name="current_userPhoto" value="{{ $user->profilephoto }}">
   <div class=" navbar-bottom col-md-6 col-md-offset-3" id="comments">
     <label for="comment">Comment:</label>
     <textarea class="form-control" rows="5" cols="3" name="comment"></textarea>

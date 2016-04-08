@@ -10,7 +10,7 @@ class Vefspurn extends Model {
 	 * @var array
 	 */
 
-	protected $fillable = ['id', 'title', 'body','hofundur', 'current_photo' , 'starfsmadur'];
+	protected $fillable = ['id', 'title', 'body','hofundur', 'current_photo' , 'starfsmadur', 'uphlada'];
 
 
 }
